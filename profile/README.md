@@ -11,8 +11,9 @@ Proteção jurídica a qualquer momento.
 Atualmente na **Sprint 02 (WIP)**. Funcionalidades principais de autenticação e gestão de processos já implementadas.
 
 - ✅ **Sprint 01**: Inicialização do ecossistema e Design System base.
-- 🏃 **Sprint 02**: Autenticação Segura (NextAuth.js) e CRUD completo de Processos.
-- 📅 **Sprint 03**: Módulo Financeiro e Integrações Externas.
+- ✅ **Sprint 02**: Autenticação Segura (NextAuth.js) e CRUD completo de Processos.
+- ✅ **Sprint 03**: Módulo Financeiro e Proxy de Integrações.
+- 📅 **Sprint 04**: Gestão de Documentos e Automação de Fluxos.
 
 ## 🏗️ Repositórios Core
 
