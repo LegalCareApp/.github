@@ -1,22 +1,30 @@
-# ⚖️ Legal Care Hub
+# ⚖️ Legal Care - Ecossistema Premium de Proteção Jurídica
 
 ![Legal Care Branding](https://raw.githubusercontent.com/LegalCareApp/.github/main/profile/banner.png)
 
 > **"Your legal protection. Anytime."**
 
-O **Legal Care Hub** é uma plataforma inovadora de gestão e assistência jurídica, projetada para conectar advogados e clientes de forma ágil, segura e transparente. Nossa missão é democratizar o acesso à justiça e otimizar a rotina de pequenos e médios escritórios através da tecnologia.
+Proteção jurídica a qualquer momento.
 
-## 🏗️ Ecossistema de Repositórios
+## 🚀 Status do Projeto
 
-A plataforma é dividida em módulos especializados para garantir escalabilidade e manutenção:
+Atualmente na **Sprint 02 (WIP)**. Funcionalidades principais de autenticação e gestão de processos já implementadas.
 
-- **[Backend](https://github.com/LegalCareApp/Backend)**: API Core em Node.js (NestJS + Prisma).
-- **[Web](https://github.com/LegalCareApp/Web)**: Dashboard administrativo para advogados (Next.js).
-- **[Mobile](https://github.com/LegalCareApp/Mobile)**: Aplicativo para clientes (React Native).
-- **[Design-System](https://github.com/LegalCareApp/Design-System)**: Biblioteca de componentes e tokens visuais.
-- **[Integrations](https://github.com/LegalCareApp/Integrations)**: Hub de serviços externos (WhatsApp, Pagamentos, APIs Governamentais).
-- **[Infra](https://github.com/LegalCareApp/Infra)**: Configurações de Docker, Kubernetes e CI/CD.
-- **[Docs](https://github.com/LegalCareApp/Docs)**: Documentação técnica e de negócio.
+- ✅ **Sprint 01**: Inicialização do ecossistema e Design System base.
+- 🏃 **Sprint 02**: Autenticação Segura (NextAuth.js) e CRUD completo de Processos.
+- 📅 **Sprint 03**: Módulo Financeiro e Integrações Externas.
+
+## 🏗️ Repositórios Core
+
+| Repositório | Descrição | Stack |
+| :--- | :--- | :--- |
+| [Web](https://github.com/LegalCareApp/Web) | Dashboard do Advogado | Next.js 15, Tailwind, NextAuth |
+| [Backend](https://github.com/LegalCareApp/Backend) | API Core | NestJS, Prisma, JWT |
+| [Design-System](https://github.com/LegalCareApp/Design-System) | UI Library | React, Tailwind |
+
+---
+
+Desenvolvido para revolucionar a advocacia moderna.
 
 ## 🛠️ Stack Tecnológica
 
