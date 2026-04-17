@@ -13,7 +13,8 @@ Atualmente na **Sprint 02 (WIP)**. Funcionalidades principais de autenticação 
 - ✅ **Sprint 01**: Inicialização do ecossistema e Design System base.
 - ✅ **Sprint 02**: Autenticação Segura (NextAuth.js) e CRUD completo de Processos.
 - ✅ **Sprint 03**: Módulo Financeiro e Proxy de Integrações.
-- 📅 **Sprint 04**: Gestão de Documentos e Automação de Fluxos.
+- ✅ **Sprint 04**: Gestão de Documentos e Automação de Fluxos.
+- 📅 **Sprint 05**: Inteligência Jurídica e Análise de Sentenças.
 
 ## 🏗️ Repositórios Core
 
