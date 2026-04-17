@@ -8,28 +8,27 @@ Bem-vindo ao repositório central do **Legal Care Hub**, uma plataforma SaaS pre
 
 ---
 
-## 🚀 Painel de Progresso (Live Status)
+## 🚀 Painel de Progresso (Live Status - Sprint 04)
 
 | Módulo Core | Progresso Local | Status | Funcionalidades em Produção |
 | :--- | :--- | :--- | :--- |
-| **Backend API** | ████████░░ 80% | 🟢 Estável | Auth JWT/RBAC, Motor de Documentos, Gestão de Casos. |
-| **Frontend Web** | ██████░░░░ 65% | 🔵 Funcional | Dashboard Financeiro, Gestor de PDFs, Pipeline Legal. |
-| **Mobile App** | ░░░░░░░░░░ 05% | 🔴 Pendente | Repositórios configurados, aguardando inicialização Expo. |
-| **Documentação** | ██████████ 100% | 🟢 Completo | Roadmaps de Sprints, Guias de Páginas e Arq. de Sistemas. |
+| **Backend API** | ██████████ 95% | 🟢 Estável | Auth JWT/RBAC, Chat, Agendamentos, Financeiro, Docs. |
+| **Frontend Web** | █████████░ 92% | 🟢 Funcional | 23/25 Telas Ready, Dashboards Dinâmicos, Wizard de Casos. |
+| **Mobile App** | ░░░░░░░░░░ 05% | 🔴 Pendente | Repositórios configurados, aguardando fase de UI nativa. |
+| **Documentação** | ██████████ 100% | 🟢 Completo | Roadmaps de Sprints (1-4), Guias e Especs Funcionais. |
 
 ---
 
-## 🗺️ Mapeamento de Interfaces (Web App)
+## 🗺️ Mapeamento de Interfaces (Web App - 23/25 Concluídas)
 
 A interface Web foi desenhada com estética **Deep Blue & Gold**, focada em UX para alta performance jurídica.
 
-*   [x] **Landing Page**: Vitrine institucional premium.
-*   [x] **Dashboard Financeiro**: Visualização de KPIs com Recharts.
-*   [x] **Gestor de Documentos**: Automação completa via Templates.
-*   [x] **Pipeline de Processos**: Gestão de status e movimentações.
-*   [x] **Portal de Acesso**: Login integrado com NextAuth.js.
-*   [ ] **Agenda de Prazos**: Calendário dinâmico (Sprint 02).
-*   [ ] **Central de Mensagens**: Chat em tempo real (Sprint 02/03).
+*   [x] **Landing Page & Área Pública**: 6/6 telas (100% Concluído).
+*   [x] **Área Administrativa (Admin)**: 5/5 telas (100% Concluído).
+*   [x] **Área do Cliente**: 8/8 telas (100% Concluído).
+*   [x] **Área do Advogado**: 4/6 telas (WIP: Detalhe do Caso, Perfil Profissional).
+*   [x] **Deep Dashboards**: Dashboards que se adaptam dinamicamente ao cargo do usuário.
+*   [x] **Interação Legal**: Sistema de Chat e Agenda unificado funcionando entre Cliente e Advogado.
 
 ---
 
@@ -40,26 +39,27 @@ O ecossistema é dividido de forma modular para suportar alta escalabilidade:
 1.  **[Backend](https://github.com/LegalCareApp/Backend)**: NestJS, Prisma, PostgreSQL, Redis.
 2.  **[Web](https://github.com/LegalCareApp/Web)**: Next.js 14, Tailwind CSS, Recharts.
 3.  **[Mobile](https://github.com/LegalCareApp/Mobile)**: React Native, Expo.
-4.  **[Docs](https://github.com/LegalCareApp/Docs)**: Central de inteligência e Roadmaps.
+4.  **[Docs](https://github.com/LegalCareApp/Docs)**: Central de inteligência e Roadmaps detalhados.
 5.  **[Integrations](https://github.com/LegalCareApp/Integrations)**: Proxy para APIs de tribunais e sistemas legados.
 
 ---
 
-## 🏗️ Roadmap Estratégico (Scrum)
+## 🏗️ Roadmap Estratégico (Scrum Methodology) 🎯
 
-Seguimos um planejamento baseado em 3 Sprints críticas, visando o lançamento do MVP em 45 dias:
+### 🟢 Sprint 01: Foundation
+*   **Entrega**: Infraestrutura Docker, Auth JWT, Design System e Landing Page. (Concluído)
 
-### 🔹 Sprint 01: Foundation
-*   **Status**: 🟢 **CONCLUÍDO**
-*   **Entrega**: Infraestrutura Docker, Auth JWT, Design System e Landing Page.
+### 🟢 Sprint 02: Core & Automation
+*   **Entrega**: Motor de Documentos (Templates), Dashboard do Advogado e Gestão de Casos. (Concluído)
 
-### 🔹 Sprint 02: Core & Automation
-*   **Status**: 🔵 **EM ANDAMENTO (WIP)**
-*   **Entrega**: Motor de Documentos (Templates), Dashboard Financeiro e Gestão de Casos.
+### 🟢 Sprint 03: Admin & Global Management
+*   **Entrega**: Área Administrativa completa, Moderação de Usuários e KPIs Globais. (Concluído)
 
-### 🔹 Sprint 03: Scalability & Payments
-*   **Status**: ⚪ **PENDENTE**
-*   **Entrega**: Integração Stripe/Asaas, Chat WebSocket e App Mobile funcional.
+### 🟢 Sprint 04: Client Area & Interaction
+*   **Entrega**: Onboarding do Cliente (Wizard), Chat em Tempo Real, Carteira e Agendamentos. (Concluído)
+
+### ⚪ Sprint 05: Mobile Foundation (Next Steps)
+*   **Foco**: Início da conversão das funcionalidades core para React Native.
 
 ---
 
