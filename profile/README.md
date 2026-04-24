@@ -1,84 +1,64 @@
-# ⚖️ Legal Care Hub — Ecossistema Jurídico 360°
+﻿# Legal Care Hub - Estado Atual da Organizacao
 
 ![Legal Care Banner](https://raw.githubusercontent.com/LegalCareApp/.github/main/profile/banner.png)
 
-> **"Transformando a advocacia através da automação inteligente e design de alto impacto."**
+> Atualizado em: 24/04/2026
 
-Bem-vindo ao repositório central do **Legal Care Hub**, uma plataforma SaaS premium projetada para conectar advogados e clientes com máxima segurança, agilidade e produtividade.
-
----
-
-## 🚀 Painel de Progresso (Live Status - Sprint 04)
-
-| Módulo Core | Progresso Local | Status | Funcionalidades em Produção |
-| :--- | :--- | :--- | :--- |
-| **Backend API** | ██████████ 95% | 🟢 Estável | Auth JWT/RBAC, Chat, Agendamentos, Financeiro, Docs. |
-| **Frontend Web** | █████████░ 92% | 🟢 Funcional | 23/25 Telas Ready, Dashboards Dinâmicos, Wizard de Casos. |
-| **Mobile App** | ░░░░░░░░░░ 05% | 🔴 Pendente | Repositórios configurados, aguardando fase de UI nativa. |
-| **Documentação** | ██████████ 100% | 🟢 Completo | Roadmaps de Sprints (1-4), Guias e Especs Funcionais. |
+Plataforma SaaS juridica com arquitetura modular em multiplos repositorios (Backend, Web, Mobile, Docs, Integrations, Infra e Design-System).
 
 ---
 
-## 🗺️ Mapeamento de Interfaces (Web App - 23/25 Concluídas)
+## Estado Atual Verificado (24/04/2026)
 
-A interface Web foi desenhada com estética **Deep Blue & Gold**, focada em UX para alta performance jurídica.
-
-*   [x] **Landing Page & Área Pública**: 6/6 telas (100% Concluído).
-*   [x] **Área Administrativa (Admin)**: 5/5 telas (100% Concluído).
-*   [x] **Área do Cliente**: 8/8 telas (100% Concluído).
-*   [x] **Área do Advogado**: 4/6 telas (WIP: Detalhe do Caso, Perfil Profissional).
-*   [x] **Deep Dashboards**: Dashboards que se adaptam dinamicamente ao cargo do usuário.
-*   [x] **Interação Legal**: Sistema de Chat e Agenda unificado funcionando entre Cliente e Advogado.
-
----
-
-## 📦 Arquitetura dos Repositórios
-
-O ecossistema é dividido de forma modular para suportar alta escalabilidade:
-
-1.  **[Backend](https://github.com/LegalCareApp/Backend)**: NestJS, Prisma, PostgreSQL, Redis.
-2.  **[Web](https://github.com/LegalCareApp/Web)**: Next.js 14, Tailwind CSS, Recharts.
-3.  **[Mobile](https://github.com/LegalCareApp/Mobile)**: React Native, Expo.
-4.  **[Docs](https://github.com/LegalCareApp/Docs)**: Central de inteligência e Roadmaps detalhados.
-5.  **[Integrations](https://github.com/LegalCareApp/Integrations)**: Proxy para APIs de tribunais e sistemas legados.
+| Repositorio | Branch | Estado Git | Verificacao Tecnica | Status Atual |
+| :--- | :--- | :--- | :--- | :--- |
+| Backend | `main` | Sincronizado com `origin/main` | `npm run build` falha | Bloqueado |
+| Web | `main` | Sincronizado com `origin/main` | `npm ci` falha por conflito de dependencias (`ERESOLVE`) | Bloqueado |
+| Mobile | `main` | Sincronizado com `origin/main` | `npx tsc --noEmit` OK; `expo start` falha no runtime atual | Parcial |
+| Docs | `main` | Sincronizado com `origin/main` | Documentacao existe, mas com partes desatualizadas sobre Mobile | Parcial |
+| .github | `main` | Sincronizado com `origin/main` | README global atualizado para estado real | Em andamento |
+| Integrations | `main` | Sincronizado com `origin/main` | Sem rotina de validacao automatizada confiavel no momento | Atenção |
+| Infra | `main` | Sincronizado com `origin/main` | Base inicial presente; sem trilha completa de release gate | Atenção |
+| Design-System | `main` | Sincronizado com `origin/main` | Tipos compartilhados presentes; falta esteira de build/test padronizada | Atenção |
 
 ---
 
-## 🏗️ Roadmap Estratégico (Scrum Methodology) 🎯
+## Bloqueios Atuais
 
-### 🟢 Sprint 01: Foundation
-*   **Entrega**: Infraestrutura Docker, Auth JWT, Design System e Landing Page. (Concluído)
-
-### 🟢 Sprint 02: Core & Automation
-*   **Entrega**: Motor de Documentos (Templates), Dashboard do Advogado e Gestão de Casos. (Concluído)
-
-### 🟢 Sprint 03: Admin & Global Management
-*   **Entrega**: Área Administrativa completa, Moderação de Usuários e KPIs Globais. (Concluído)
-
-### 🟢 Sprint 04: Client Area & Interaction
-*   **Entrega**: Onboarding do Cliente (Wizard), Chat em Tempo Real, Carteira e Agendamentos. (Concluído)
-
-### ⚪ Sprint 05: Mobile Foundation (Next Steps)
-*   **Foco**: Início da conversão das funcionalidades core para React Native.
+1. Backend nao compila por incompatibilidades tipadas no modulo de documentos (`src/documents/documents.service.ts`).
+2. Web nao instala dependencias com `npm ci` devido conflito entre `next-auth@4.0.0-next.26` e stack React atual.
+3. Mobile inicia typecheck, mas falha em `expo start` no ambiente atual (Node 24 + Metro em Windows, erro ESM URL scheme).
+4. Contratos consumidos por Mobile e Web nao estao plenamente convergentes no Backend (rotas e payloads ainda divergem em partes criticas).
 
 ---
 
-## 🔒 Segurança e Compliance (LGPD)
+## Proximo Sprint (Foco)
 
-O Legal Care Hub foi construído sob o princípio de *Privacy by Design*:
-*   **Criptografia**: Dados em trânsito (TLS 1.3) e em repouso (AES-256).
-*   **Sigilo Profissional**: Auditoria de logs e isolamento total de dados por advogado.
-*   **Conformidade**: Ferramentas nativas para gestão de consentimento e direitos do titular (LGPD).
+O proximo ciclo oficial esta definido como **Sprint 07 - Integracao e Hardening**, com foco em:
+
+- convergencia de contratos API entre Backend, Web e Mobile;
+- estabilizacao de build/instalacao/runtime em todos os repositorios;
+- fechamento das lacunas funcionais de processos, chat, financeiro, perfil, push e documentos;
+- checklist unico de readiness para pre-producao.
+
+Arquivo fonte do roadmap:
+- `Docs/sprints/sprint-07-integration-hardening.md`
+
+Artefato PDF executivo:
+- `C:\Users\RUI FRANCISCO\Desktop\Roadmap_LegalCare_Sprint07.pdf`
 
 ---
 
-## 👥 Contribuição e Equipe
+## Arquitetura dos Repositorios
 
-Este projeto é gerenciado internamente pela equipe técnica do **Legal Care App**.
-*   **Arquiteto/Lead**: [Dev-RuiDiniz](https://github.com/Dev-RuiDiniz)
-*   **Tecnologias**: TypeScript, NestJS, Next.js, React Native, Prisma.
+1. **Backend**: NestJS + Prisma + PostgreSQL
+2. **Web**: Next.js + TypeScript
+3. **Mobile**: Expo + React Native + NativeWind
+4. **Docs**: Documentacao tecnica, roadmap e guias
+5. **Integrations**: Proxies e conectores externos
+6. **Infra**: IaC, pipelines e operacao
+7. **Design-System**: Tipos compartilhados e base visual
 
 ---
 
-> [!IMPORTANT]
-> Para instruções de instalação local de cada módulo, consulte o README específico em cada repositório acima.
+> Para onboarding tecnico rapido, consulte os READMEs de cada repositorio e o roadmap ativo em `Docs/sprints`.
