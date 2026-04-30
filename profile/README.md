@@ -1,64 +1,73 @@
-﻿# Legal Care Hub - Estado Atual da Organizacao
+﻿# Legal Care Hub - Estado Atual da Organização
 
 ![Legal Care Banner](https://raw.githubusercontent.com/LegalCareApp/.github/main/profile/banner.png)
 
-> Atualizado em: 24/04/2026
+> Atualizado em: 27/04/2026
 
-Plataforma SaaS juridica com arquitetura modular em multiplos repositorios (Backend, Web, Mobile, Docs, Integrations, Infra e Design-System).
-
----
-
-## Estado Atual Verificado (24/04/2026)
-
-| Repositorio | Branch | Estado Git | Verificacao Tecnica | Status Atual |
-| :--- | :--- | :--- | :--- | :--- |
-| Backend | `main` | Sincronizado com `origin/main` | `npm run build` falha | Bloqueado |
-| Web | `main` | Sincronizado com `origin/main` | `npm ci` falha por conflito de dependencias (`ERESOLVE`) | Bloqueado |
-| Mobile | `main` | Sincronizado com `origin/main` | `npx tsc --noEmit` OK; `expo start` falha no runtime atual | Parcial |
-| Docs | `main` | Sincronizado com `origin/main` | Documentacao existe, mas com partes desatualizadas sobre Mobile | Parcial |
-| .github | `main` | Sincronizado com `origin/main` | README global atualizado para estado real | Em andamento |
-| Integrations | `main` | Sincronizado com `origin/main` | Sem rotina de validacao automatizada confiavel no momento | Atenção |
-| Infra | `main` | Sincronizado com `origin/main` | Base inicial presente; sem trilha completa de release gate | Atenção |
-| Design-System | `main` | Sincronizado com `origin/main` | Tipos compartilhados presentes; falta esteira de build/test padronizada | Atenção |
+Plataforma SaaS jurídica com arquitetura modular em múltiplos repositórios (Backend, Web, Mobile, Docs, Integrations, Infra e Design-System).
 
 ---
 
-## Bloqueios Atuais
+## Status do Ciclo Atual
 
-1. Backend nao compila por incompatibilidades tipadas no modulo de documentos (`src/documents/documents.service.ts`).
-2. Web nao instala dependencias com `npm ci` devido conflito entre `next-auth@4.0.0-next.26` e stack React atual.
-3. Mobile inicia typecheck, mas falha em `expo start` no ambiente atual (Node 24 + Metro em Windows, erro ESM URL scheme).
-4. Contratos consumidos por Mobile e Web nao estao plenamente convergentes no Backend (rotas e payloads ainda divergem em partes criticas).
-
----
-
-## Proximo Sprint (Foco)
-
-O proximo ciclo oficial esta definido como **Sprint 07 - Integracao e Hardening**, com foco em:
-
-- convergencia de contratos API entre Backend, Web e Mobile;
-- estabilizacao de build/instalacao/runtime em todos os repositorios;
-- fechamento das lacunas funcionais de processos, chat, financeiro, perfil, push e documentos;
-- checklist unico de readiness para pre-producao.
-
-Arquivo fonte do roadmap:
-- `Docs/sprints/sprint-07-integration-hardening.md`
-
-Artefato PDF executivo:
-- `C:\Users\RUI FRANCISCO\Desktop\Roadmap_LegalCare_Sprint07.pdf`
+| Repositório | Status Local | Observação |
+| --- | --- | --- |
+| Backend | Em validação | `nest build` não expôs erro no log capturado; a conclusão final do processo ficou limitada pela ferramenta. |
+| Web | Validado | `next build` concluiu no ciclo atual após hardening de runtime e ajustes de lint/typecheck. |
+| Mobile | Validado | `npx tsc --noEmit` concluiu sem erros visíveis no ciclo atual. |
+| Docs | Sincronizado | README, matriz de cobertura e checklist de release atualizados. |
+| .github | Sincronizado | Organização refletindo Sprint 07 e os artefatos de release. |
+| Infra | Em hardening | Baseline de Node 22 documentado nos repositórios de app e na infraestrutura. |
+| Design-System | Dependente | Continua como camada compartilhada para tipagem e UI. |
 
 ---
 
-## Arquitetura dos Repositorios
+## Sprint Atual
+
+**Sprint 07 — Integration & Hardening**
+
+Foco principal:
+- convergência de contratos entre Backend, Web e Mobile;
+- checklist único de pre-produção;
+- matriz de cobertura documental;
+- alinhamento de runtime e DX.
+
+Arquivos de referência:
+- `Docs/Docs-main/sprints/sprint-07-integration-hardening.md`
+- `Docs/Docs-main/release-readiness-checklist.md`
+- `Docs/Docs-main/coverage-matrix.md`
+
+---
+
+## Artefatos de Release
+
+- [Checklist de Release](../../Docs-main/Docs-main/release-readiness-checklist.md)
+- [Matriz de Cobertura](../../Docs-main/Docs-main/coverage-matrix.md)
+- [README da Documentação](../../Docs-main/Docs-main/README.md)
+- [Guia de Telas / Coverage](../../Docs-main/Docs-main/pages-guide.md)
+
+---
+
+## Bloqueios e Próximos Passos
+
+1. Sincronizar `functional-spec.md` e `pages-guide.md` com os contratos atuais da Sprint 07.
+2. Criar `CONTRIBUTING.md` na documentação técnica.
+3. Registrar um changelog da Sprint 07 com os artefatos de release.
+4. Revalidar o backend até obter o fim do `nest build` de forma explícita.
+5. Revalidar `expo start` no Windows após a padronização do Node 22.
+
+---
+
+## Arquitetura dos Repositórios
 
 1. **Backend**: NestJS + Prisma + PostgreSQL
 2. **Web**: Next.js + TypeScript
 3. **Mobile**: Expo + React Native + NativeWind
-4. **Docs**: Documentacao tecnica, roadmap e guias
+4. **Docs**: Documentação técnica, roadmap e guias
 5. **Integrations**: Proxies e conectores externos
-6. **Infra**: IaC, pipelines e operacao
+6. **Infra**: IaC, pipelines e operação
 7. **Design-System**: Tipos compartilhados e base visual
 
 ---
 
-> Para onboarding tecnico rapido, consulte os READMEs de cada repositorio e o roadmap ativo em `Docs/sprints`.
+> Para onboarding técnico rápido, consulte os READMEs de cada repositório, o roadmap ativo em `Docs/sprints` e o checklist único de release.
