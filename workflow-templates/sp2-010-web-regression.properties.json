@@ -1,0 +1,6 @@
+{
+  "name": "SP2-010 Web Regression",
+  "description": "Build Next.js and run SP2-009 role guards plus SP2-010 Playwright smoke regression with evidence artifacts.",
+  "iconName": "octicon shield-check",
+  "categories": ["JavaScript", "TypeScript", "Testing", "Continuous integration"]
+}

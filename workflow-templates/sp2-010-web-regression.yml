@@ -1,0 +1,67 @@
+name: SP2-010 Web Regression
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'src/**'
+      - 'e2e/**'
+      - 'playwright.config.ts'
+      - 'docs/SP2-010-smoke-e2e.md'
+  workflow_dispatch:
+
+jobs:
+  sp2-010-web-regression:
+    name: Build and Playwright regression
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright Chromium
+        run: npm exec playwright install --with-deps chromium
+
+      - name: Build Web app
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+
+      - name: Run SP2-009 role guard regression
+        run: npm run test:e2e:roles
+        env:
+          CI: 'true'
+          NEXT_TELEMETRY_DISABLED: '1'
+
+      - name: Run SP2-010 critical smoke regression
+        run: npm run test:e2e:smoke
+        env:
+          CI: 'true'
+          NEXT_TELEMETRY_DISABLED: '1'
+
+      - name: Upload SP2-010 Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sp2-010-playwright-results
+          path: |
+            test-results/e2e/results.json
+            test-results/e2e/junit.xml
+            test-results/e2e/html-report
+            test-results/**/trace.zip
+            test-results/**/video.webm
+            test-results/**/*.png
+          if-no-files-found: warn
+          retention-days: 14
