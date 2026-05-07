@@ -1,0 +1,129 @@
+name: CI Integrations
+
+on:
+  push:
+    branches: [main, develop, 'feature/**']
+    paths:
+      - 'integrations/**'
+      - '.github/workflows/ci-integrations.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'integrations/**'
+      - '.github/workflows/ci-integrations.yml'
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '20'
+  WORKING_DIRECTORY: 'integrations'
+
+jobs:
+  install:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: Compute cache key
+        id: cache-key
+        run: echo "key=${{ runner.os }}-node-${{ env.NODE_VERSION }}-${{ hashFiles(format('{0}/package-lock.json', env.WORKING_DIRECTORY)) }}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/node_modules
+            ~/.npm
+          key: ${{ steps.cache-key.outputs.key }}
+
+      - name: Install dependencies
+        run: npm ci
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: install
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: Restore node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/node_modules
+            ~/.npm
+          key: ${{ needs.install.outputs.cache-key }}
+
+      - name: Run linter
+        run: |
+          if npm pkg get scripts.lint | grep -qv '^{}$'; then
+            npm run lint
+          else
+            echo "No lint script found, skipping..."
+          fi
+
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    needs: [install, lint]
+    if: always() && needs.install.result == 'success'
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: ${{ env.WORKING_DIRECTORY }}/package-lock.json
+
+      - name: Restore node_modules cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ env.WORKING_DIRECTORY }}/node_modules
+            ~/.npm
+          key: ${{ needs.install.outputs.cache-key }}
+
+      - name: Run contract tests
+        run: |
+          if npm pkg get scripts.test:contracts:ci | grep -qv '^{}$'; then
+            npm run test:contracts:ci
+          else
+            echo "No contract tests found, skipping..."
+          fi
+        env:
+          NODE_ENV: test

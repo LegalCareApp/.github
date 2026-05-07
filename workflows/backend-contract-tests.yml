@@ -1,0 +1,48 @@
+name: Backend Contract Tests
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-contract-tests.yml"
+      - "package.json"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-contract-tests.yml"
+      - "package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-tests:
+    name: API contract collection
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate --schema prisma/schema.prisma
+
+      - name: Run API contract collection
+        run: npm run test:contracts:ci

@@ -1,0 +1,50 @@
+name: Multiapp API Smoke
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - "web/**"
+      - "mobile/**"
+      - "scripts/smoke-api.mjs"
+      - "docs/smoke-reports/**"
+      - ".github/workflows/multiapp-smoke.yml"
+      - "package.json"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "backend/**"
+      - "web/**"
+      - "mobile/**"
+      - "scripts/smoke-api.mjs"
+      - "docs/smoke-reports/**"
+      - ".github/workflows/multiapp-smoke.yml"
+      - "package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: SP1-010 smoke multiaplicação
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Run deterministic smoke
+        run: SMOKE_MOCK=true npm run smoke:api:ci

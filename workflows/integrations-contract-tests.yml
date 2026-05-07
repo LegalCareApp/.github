@@ -1,0 +1,45 @@
+name: Integrations Contract Tests
+
+on:
+  pull_request:
+    paths:
+      - "integrations/**"
+      - ".github/workflows/integrations-contract-tests.yml"
+      - "package.json"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "integrations/**"
+      - ".github/workflows/integrations-contract-tests.yml"
+      - "package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract-tests:
+    name: Integration proxy contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    defaults:
+      run:
+        working-directory: integrations
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: integrations/package-lock.json
+
+      - name: Install integrations dependencies
+        run: npm ci
+
+      - name: Run integration proxy contracts
+        run: npm run test:contracts:ci
