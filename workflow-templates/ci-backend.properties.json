@@ -1,0 +1,7 @@
+{
+  "name": "CI Backend (NestJS)",
+  "description": "Pipeline completa para backend NestJS: install, lint, type-check, test unit, test e2e, build. Com PostgreSQL em container para testes.",
+  "iconName": "server",
+  "categories": ["JavaScript", "NestJS", "Backend", "CI"],
+  "filePatterns": ["backend/**", ".github/workflows/ci-backend.yml"]
+}
