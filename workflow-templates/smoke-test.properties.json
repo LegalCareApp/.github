@@ -1,0 +1,7 @@
+{
+  "name": "Smoke Test (Multi-App)",
+  "description": "Executa smoke tests end-to-end para backend e web. Inclui PostgreSQL em container, geração de relatórios e artefatos.",
+  "iconName": "flame",
+  "categories": ["JavaScript", "Testing", "E2E"],
+  "filePatterns": ["backend/**", "web/**", ".github/workflows/smoke-test.yml"]
+}

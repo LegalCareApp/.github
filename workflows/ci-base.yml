@@ -1,0 +1,249 @@
+name: CI Base
+
+on:
+  workflow_call:
+    inputs:
+      working_directory:
+        description: "Directory that contains package.json and package-lock.json."
+        required: false
+        type: string
+        default: "."
+      node_version:
+        description: "Node.js version override. When empty, reads .nvmrc from working_directory or repository root, then falls back to 22."
+        required: false
+        type: string
+        default: ""
+      run_build:
+        description: "Run npm build script."
+        required: false
+        type: boolean
+        default: true
+      run_test:
+        description: "Run npm test script."
+        required: false
+        type: boolean
+        default: true
+      run_typecheck:
+        description: "Run TypeScript typecheck with tsc --noEmit."
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    name: Install dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    outputs:
+      node-version: ${{ steps.node-version.outputs.version }}
+      cache-key: ${{ steps.cache-key.outputs.key }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve Node.js version
+        id: node-version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${{ inputs.node_version }}" ]; then
+            VERSION="${{ inputs.node_version }}"
+          elif [ -f ".nvmrc" ]; then
+            VERSION="$(tr -d '[:space:]' < .nvmrc)"
+          elif [ -f "${{ github.workspace }}/.nvmrc" ]; then
+            VERSION="$(tr -d '[:space:]' < "${{ github.workspace }}/.nvmrc")"
+          else
+            VERSION="22"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Using Node.js ${VERSION}"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.node-version.outputs.version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Compute dependency cache key
+        id: cache-key
+        shell: bash
+        run: |
+          set -euo pipefail
+          SAFE_DIR="$(printf '%s' '${{ inputs.working_directory }}' | tr '/.' '--')"
+          echo "key=${{ runner.os }}-node-${{ steps.node-version.outputs.version }}-${SAFE_DIR}-${{ hashFiles(format('{0}/package-lock.json', inputs.working_directory), format('{0}/package.json', inputs.working_directory)) }}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore node_modules and npm cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ inputs.working_directory }}/node_modules
+            ~/.npm
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.node-version.outputs.version }}-
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            echo "::error title=Missing package-lock.json::npm was identified as the package manager, but package-lock.json was not found in '${{ inputs.working_directory }}'."
+            exit 1
+          fi
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    needs: install
+    if: ${{ inputs.run_typecheck }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.install.outputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Restore node_modules and npm cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ inputs.working_directory }}/node_modules
+            ~/.npm
+          key: ${{ needs.install.outputs.cache-key }}
+
+      - name: Run TypeScript typecheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d node_modules ]; then
+            npm ci
+          fi
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit --pretty false
+          else
+            echo "::error title=Missing tsconfig.json::run_typecheck=true, but tsconfig.json was not found in '${{ inputs.working_directory }}'."
+            exit 1
+          fi
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [install, typecheck]
+    if: ${{ always() && needs.install.result == 'success' && (needs.typecheck.result == 'success' || needs.typecheck.result == 'skipped') && inputs.run_build }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.install.outputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Restore node_modules and npm cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ inputs.working_directory }}/node_modules
+            ~/.npm
+          key: ${{ needs.install.outputs.cache-key }}
+
+      - name: Run build
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d node_modules ]; then
+            npm ci
+          fi
+          if npm pkg get scripts.build | grep -qv '^{}$'; then
+            npm run build
+          else
+            echo "::error title=Missing build script::run_build=true, but package.json has no build script in '${{ inputs.working_directory }}'."
+            exit 1
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: build-output
+          if-no-files-found: ignore
+          retention-days: 7
+          path: |
+            ${{ inputs.working_directory }}/dist
+            ${{ inputs.working_directory }}/build
+            ${{ inputs.working_directory }}/out
+            ${{ inputs.working_directory }}/.next
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: [install, typecheck, build]
+    if: ${{ always() && needs.install.result == 'success' && (needs.typecheck.result == 'success' || needs.typecheck.result == 'skipped') && (needs.build.result == 'success' || needs.build.result == 'skipped') && inputs.run_test }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ needs.install.outputs.node-version }}
+          cache: npm
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+
+      - name: Restore node_modules and npm cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ${{ inputs.working_directory }}/node_modules
+            ~/.npm
+          key: ${{ needs.install.outputs.cache-key }}
+
+      - name: Run tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d node_modules ]; then
+            npm ci
+          fi
+          if npm pkg get scripts.test | grep -qv '^{}$'; then
+            npm test
+          else
+            echo "::error title=Missing test script::run_test=true, but package.json has no test script in '${{ inputs.working_directory }}'."
+            exit 1
+          fi

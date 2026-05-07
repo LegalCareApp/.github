@@ -1,0 +1,7 @@
+{
+  "name": "Backend Contract Tests",
+  "description": "Executa testes de contrato da API backend (SP1-007). Roda automaticamente em PRs e pushes para main.",
+  "iconName": "beaker",
+  "categories": ["JavaScript", "NestJS", "API", "Testing"],
+  "filePatterns": ["backend/**", ".github/workflows/backend-contract-tests.yml"]
+}

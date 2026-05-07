@@ -1,0 +1,49 @@
+{
+  "name": "legal-care-app",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "npm@11.9.0",
+  "engines": {
+    "node": ">=22.0.0 <23.0.0"
+  },
+  "scripts": {
+    "backend:install": "npm --prefix backend install",
+    "backend:dev": "npm --prefix backend run start:dev",
+    "backend:build": "npm --prefix backend run build",
+    "backend:test": "npm --prefix backend test",
+    "backend:prisma:generate": "cd backend && npx prisma generate --schema prisma/schema.prisma",
+    "backend:prisma:migrate": "cd backend && npx prisma migrate dev --schema prisma/schema.prisma",
+    "backend:prisma:push": "cd backend && npx prisma db push --schema prisma/schema.prisma",
+    "mobile:install": "npm --prefix mobile install",
+    "mobile:start": "npm --prefix mobile run start",
+    "mobile:web": "npm --prefix mobile run web",
+    "web": "npm --prefix web run dev",
+    "web:install": "npm --prefix web install",
+    "web:ci:install": "npm --prefix web install",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build",
+    "web:test:e2e": "npm --prefix web run test:e2e",
+    "web:test:e2e:smoke": "npm --prefix web run test:e2e:smoke",
+    "web:test:e2e:roles": "npm --prefix web run test:e2e:roles",
+    "web:ci:sp2-010": "npm run web:ci:install && npm --prefix web exec playwright install chromium && npm run web:build && npm run web:test:e2e:roles && npm run web:test:e2e:smoke",
+    "web:preview": "npm --prefix web run start",
+    "design-system:install": "npm --prefix design-system install",
+    "integrations:install": "npm --prefix integrations install",
+    "integrations:dev": "npm --prefix integrations run dev",
+    "integrations:start": "npm --prefix integrations run start",
+    "install:all": "npm run backend:install && npm run design-system:install && npm run web:install && npm run mobile:install && npm run integrations:install",
+    "backend:test:contracts": "npm --prefix backend run test:contracts",
+    "backend:test:contracts:ci": "npm --prefix backend run test:contracts:ci",
+    "integrations:test:contracts": "npm --prefix integrations run test:contracts",
+    "integrations:test:contracts:ci": "npm --prefix integrations run test:contracts:ci",
+    "docs:api": "node -e \"console.log('API docs: docs/api-contracts.md and docs/coverage-matrix.md')\"",
+    "smoke:api": "node scripts/smoke-api.mjs",
+    "smoke:api:ci": "node scripts/smoke-api.mjs --ci",
+    "smoke:multiapp": "npm run smoke:api",
+    "smoke:multiapp:ci": "npm run smoke:api:ci"
+  },
+  "dependencies": {
+    "@nestjs/platform-express": "^11.1.19",
+    "multer": "^2.1.1"
+  }
+}

@@ -1,0 +1,36 @@
+# ─────────────────────────────────────────────────────────
+# CODEOWNERS — LegalCareApp
+# Cada linha define quem deve revisar mudanças em cada área.
+# Documentação: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# ─────────────────────────────────────────────────────────
+
+# Infraestrutura e CI
+.github/                        @rockbca-dotcom/infra-team
+infra/                          @rockbca-dotcom/infra-team
+docker-compose.yml              @rockbca-dotcom/infra-team
+*.yml                           @rockbca-dotcom/infra-team
+
+# Backend
+backend/                        @rockbca-dotcom/backend-team
+backend/prisma/                 @rockbca-dotcom/backend-team
+
+# Web
+web/                            @rockbca-dotcom/frontend-team
+
+# Mobile
+mobile/                         @rockbca-dotcom/mobile-team
+
+# Design System
+design-system/                  @rockbca-dotcom/frontend-team
+
+# Integrações
+integrations/                   @rockbca-dotcom/backend-team
+
+# Documentação
+docs/                           @rockbca-dotcom/tech-leads
+architecture.md                 @rockbca-dotcom/tech-leads
+README.md                       @rockbca-dotcom/tech-leads
+
+# Configurações raiz (impacto amplo)
+package.json                    @rockbca-dotcom/tech-leads
+.nvmrc                          @rockbca-dotcom/infra-team

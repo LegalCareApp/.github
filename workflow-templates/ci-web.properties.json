@@ -1,0 +1,7 @@
+{
+  "name": "CI Web (Next.js)",
+  "description": "Pipeline para frontend Next.js: install, lint, type-check, build e testes E2E com Playwright.",
+  "iconName": "browser",
+  "categories": ["JavaScript", "Next.js", "Frontend", "CI"],
+  "filePatterns": ["web/**", ".github/workflows/ci-web.yml"]
+}
